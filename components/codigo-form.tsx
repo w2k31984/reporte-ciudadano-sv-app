@@ -8,6 +8,13 @@ export function CodigoForm({ codigo = "" }: { codigo?: string }) {
   const router = useRouter();
   const [value, setValue] = useState(codigo);
   const [error, setError] = useState("");
+  const [syncedCodigo, setSyncedCodigo] = useState(codigo);
+
+  if (codigo !== syncedCodigo) {
+    setSyncedCodigo(codigo);
+    setValue(codigo);
+    setError("");
+  }
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

@@ -41,7 +41,7 @@ async function Consulta({
 
   return (
     <>
-      <CodigoForm key={code} codigo={code} />
+      <CodigoForm codigo={code} />
       {code ? (
         <Resultado code={code} />
       ) : (
