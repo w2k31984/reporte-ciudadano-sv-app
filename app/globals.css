@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-source-sans), ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #303845;
+  --color-muted: #3c4557;
+  --color-paper: #f5f7fe;
+  --color-card: #ffffff;
+  --color-header: #303845;
+  --color-line: #c5c8cf;
+  --color-accent: #3d6fe0;
+  --color-accent-hover: #325cc4;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+.report-pin.leaflet-div-icon,
+.admin-pin.leaflet-div-icon {
+  background: transparent;
+  border: none;
+}
+
+.report-map .leaflet-container {
+  height: 100%;
+  width: 100%;
+  font-size: 0.875rem;
+}
+
+.report-map .leaflet-control-attribution {
+  max-width: calc(100% - 6rem);
+  white-space: normal;
+}
+
+.admin-shell {
+  height: calc(100dvh - 4.75rem);
+}
+
+body :focus-visible {
+  outline: 3px solid #325cc4;
+  outline-offset: 2px;
+}
+
+.leaflet-bar.leaflet-control-zoom .leaflet-control-zoom-in,
+.leaflet-bar.leaflet-control-zoom .leaflet-control-zoom-out {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  font-size: 22px;
+}
+
+.admin-marker {
+  display: flex;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgb(48 56 69 / 35%);
+}
+
+.admin-marker.is-selected {
+  outline: 3px solid #303845;
+  outline-offset: 2px;
+}
+
+.admin-marker.is-fresh {
+  animation: admin-marker-pop 0.8s ease-out;
+}
+
+.admin-row-fresh {
+  animation: admin-row-flash 1.6s ease-out;
+}
+
+@keyframes admin-marker-pop {
+  0% {
+    transform: scale(0.45);
+  }
+  55% {
+    transform: scale(1.28);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes admin-row-flash {
+  0% {
+    background-color: #d9e4ff;
+  }
+  100% {
+    background-color: transparent;
+  }
+}
