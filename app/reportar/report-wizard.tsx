@@ -353,8 +353,14 @@ export function ReportWizard() {
 
       succeeded = true;
       setTrackingCode(result.trackingCode);
-    } catch {
-      setError("No pudimos enviar el reporte. Revisá tu conexión e intentá de nuevo.");
+    } catch (error) {
+      const missingConfig =
+        error instanceof Error && error.message.includes("NEXT_PUBLIC_SUPABASE");
+      setError(
+        missingConfig
+          ? "Falta la configuración del servidor. Cargá las variables en Vercel y volvé a desplegar."
+          : "No pudimos enviar el reporte. Revisá tu conexión e intentá de nuevo.",
+      );
     } finally {
       setSending(false);
       if (!succeeded) sendingLock.current = false;
