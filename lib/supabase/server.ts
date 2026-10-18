@@ -3,10 +3,10 @@ import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
+import { publicSupabaseEnv } from "@/lib/supabase/public-env";
 
 function publicEnv() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  const { url, key } = publicSupabaseEnv();
 
   if (!url || !key) {
     throw new Error(

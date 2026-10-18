@@ -1,8 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { publicSupabaseEnv } from "@/lib/supabase/public-env";
 
 export function proxy(request: NextRequest) {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  const { url, key } = publicSupabaseEnv();
 
   if (!url || !key) {
     return new NextResponse("Falta la configuración del servidor.", { status: 503 });
