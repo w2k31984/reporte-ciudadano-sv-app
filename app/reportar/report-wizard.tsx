@@ -13,7 +13,6 @@ import {
   type ReportCategory,
 } from "@/lib/types";
 import { Skeleton } from "@/components/skeleton";
-import { createReport } from "./actions";
 import type { Classification } from "@/lib/classify";
 
 const ReportMap = dynamic(() => import("./report-map"), {
@@ -334,20 +333,37 @@ export function ReportWizard() {
       }
 
       const ai = suggestionRef.current;
-      const result = await createReport({
-        category,
-        description,
-        photoPath,
-        lat: position.lat,
-        lng: position.lng,
-        consent: true,
-        aiCategory: ai?.category ?? null,
-        aiSummary: ai?.summary ?? null,
-        aiConfidence: ai?.confidence ?? null,
+      const response = await fetch("/api/reports", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          category,
+          description,
+          photoPath,
+          lat: position.lat,
+          lng: position.lng,
+          consent: true,
+          aiCategory: ai?.category ?? null,
+          aiSummary: ai?.summary ?? null,
+          aiConfidence: ai?.confidence ?? null,
+        }),
       });
+      const contentType = response.headers.get("content-type") ?? "";
+      if (!contentType.includes("application/json")) {
+        setError(
+          "Este enlace de Vercel pide inicio de sesión y no dejó enviar el reporte. En Settings → Deployment Protection desactivá Vercel Authentication, volvé a desplegar y abrí el dominio de producción.",
+        );
+        return;
+      }
 
-      if (!result.ok) {
-        setError(result.error);
+      const result = (await response.json()) as {
+        ok: boolean;
+        error?: string;
+        trackingCode?: string;
+      };
+
+      if (!result.ok || !result.trackingCode) {
+        setError(result.error ?? "No pudimos guardar el reporte. Intentá de nuevo.");
         return;
       }
 
